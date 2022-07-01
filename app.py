@@ -3,6 +3,7 @@ from logging import Logger
 import os
 import redis
 from google.cloud import storage
+from flask import Flask, render_template
 
 from flask import Flask
 import logging
@@ -32,21 +33,7 @@ r = None
 def download_file(value):
     download_from_bucket("test-python-001", f"{value}.jpeg")
     if os.path.isfile(f"{value}.jpeg"):
-        return f'''
-        <!DOCTYPE html>
-        <html lang="en">
-
-        <head>
-        </head>
-
-        <body>
-            <h1>Downloaded image</h1>
-            <img src="{value}.jpeg" alt="{value}.jpeg" width="500" height="400">
-        </body>
-
-        </html>
-
-        ''', 200
+        return render_template("hello.html", value=f"{value}.jpeg"), 200
     return "NotFound", 404
 
 
