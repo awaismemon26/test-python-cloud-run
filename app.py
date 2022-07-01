@@ -10,7 +10,9 @@ r = None
 
 @app.route("/")
 def hello_world():
-    return "hey there world"
+    global r
+    r = redis.Redis(host=os.environ.get('REDIS_URL'), port=6379, db=1)
+    return "Init redis"
 
 
 @app.route('/add/<key>/<value>')
@@ -41,5 +43,4 @@ def get(key):
 
 
 if __name__ == "__main__":
-    r = redis.Redis(host=os.environ.get('REDIS_URL'), port=6379, db=1)
     app.run(debug=True, host="0.0.0.0", port=int(os.environ.get("PORT", 8080)))
